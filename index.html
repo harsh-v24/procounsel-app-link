@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ProCounsel App</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>
+    // Your final app links:
+    const androidPackage = "com.catalystai.ProCounsel";
+    const playStoreLink = "https://play.google.com/store/apps/details?id=com.catalystai.ProCounsel";
+    const appStoreLink = "https://apps.apple.com/in/app/procounsel/id6752525886";
+
+    // Optional fallback if device is unknown (can be your website or Play Store)
+    const fallbackWeb = playStoreLink;
+
+    function openStore() {
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+      // Detect Android
+      if (/android/i.test(ua)) {
+        // Try to open Play Store app first
+        window.location.href =
+          `intent://details?id=${androidPackage}#Intent;scheme=market;package=com.android.vending;end`;
+
+        // Fallback to browser Play Store link
+        setTimeout(() => {
+          window.location.href = playStoreLink;
+        }, 800);
+        return;
+      }
+
+      // Detect iOS
+      if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
+        // Open App Store directly
+        window.location.href = appStoreLink;
+        return;
+      }
+
+      // Desktop or unknown device
+      window.location.href = fallbackWeb;
+    }
+
+    window.addEventListener("load", () => {
+      setTimeout(openStore, 300);
+    });
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #f8f8f8;
+    }
+    .box {
+      text-align: center;
+      padding: 25px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Opening ProCounsel…</h2>
+    <p>If nothing happens,<br>
+      <a id="fallback" href="#">Click here to download</a>.
+    </p>
+  </div>
+
+  <script>
+    // Set correct fallback link based on device
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    document.getElementById("fallback").href =
+      /android/i.test(ua) ? playStoreLink : appStoreLink;
+  </script>
+</body>
+</html>
